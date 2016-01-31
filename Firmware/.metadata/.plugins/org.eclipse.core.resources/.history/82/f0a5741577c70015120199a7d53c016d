@@ -1,0 +1,16 @@
+################################################################################
+# Automatically-generated file. Do not edit!
+################################################################################
+
+# Add inputs and outputs from these tool invocations to the build variables 
+O_SRCS += \
+../mbed/TARGET_KL05Z/TOOLCHAIN_GCC_ARM/board.o \
+../mbed/TARGET_KL05Z/TOOLCHAIN_GCC_ARM/cmsis_nvic.o \
+../mbed/TARGET_KL05Z/TOOLCHAIN_GCC_ARM/mbed_overrides.o \
+../mbed/TARGET_KL05Z/TOOLCHAIN_GCC_ARM/retarget.o \
+../mbed/TARGET_KL05Z/TOOLCHAIN_GCC_ARM/startup_MKL05Z4.o \
+../mbed/TARGET_KL05Z/TOOLCHAIN_GCC_ARM/system_MKL05Z4.o 
+
+
+# Each subdirectory must supply rules for building sources it contributes
+

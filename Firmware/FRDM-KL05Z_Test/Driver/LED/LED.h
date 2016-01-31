@@ -1,0 +1,29 @@
+///////////////////////////////////////////////////////////////////////////////
+/// \file IO.h
+/// \author Ronald Sousa
+/// \website www.HashDefineElectronics.com
+/// \company Hash Define Electronics Ltd
+///
+/// \brief  define the IO header
+///////////////////////////////////////////////////////////////////////////////
+
+#ifndef __IO_H__
+#define __IO_H__
+    #include "../../common.h"
+
+	///////////////////////////////////////////////////////////////////////////////
+	/// \brief defines the LED Colour
+	///////////////////////////////////////////////////////////////////////////////
+	typedef enum{
+		RED,
+		GREEN,
+		BLUE
+	}LED_Selector;
+
+	void LED_On(LED_Selector led);
+	void LED_Off(LED_Selector led);
+	void LED_Toggle(LED_Selector led);
+	void LED_Init(void);
+
+#endif
+

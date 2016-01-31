@@ -1,0 +1,115 @@
+///////////////////////////////////////////////////////////////////////////////
+/// \file tick.h
+/// \author Ronald Sousa
+/// \website www.HashDefineElectronics.com
+/// \company Hash Define Electronics Ltd
+/// \Created 08 May 2015
+///
+/// \brief  Handles generation a stable 1ms tick counter to create system delay
+///
+///
+/// \setion Project Dependency
+/// Compiler: Microchip XC32 v1.34
+/// library: Microchip Harmony v1.03.01
+/// IDE: Microchip MPLABX v2.26
+///////////////////////////////////////////////////////////////////////////////
+#include "common.h"
+#include "Tick.h"
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief This is our internal system tick counter. the interrupt driving
+/// this variable is set to trigger every milisecond. this variable shouldn't be
+/// directly access outside this file
+///////////////////////////////////////////////////////////////////////////////
+static volatile uint32_t TickMs = 0;
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief defines the tick peripheral
+///////////////////////////////////////////////////////////////////////////////
+Ticker Tick;
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief This function is the tick interrupt
+///////////////////////////////////////////////////////////////////////////////
+void Tick_Intterrupt(void)
+{
+	TickMs++;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Initialzes the resource for out system tick
+///////////////////////////////////////////////////////////////////////////////
+void Tick_Init(void)
+{
+	Tick.attach(&Tick_Intterrupt, 0.001); // the address of the function to be attached (flip) and the interval (2 seconds)
+    TickMs = 0;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief returns the current system tick counter
+///////////////////////////////////////////////////////////////////////////////
+uint32_t Tick_GetMs(void)
+{
+    uint32_t TickTemp = TickMs;
+
+    return (10*TickTemp);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief system delay in ms. Non-blockig
+///
+/// \param reset true= reset timer. false= monitor timer
+/// \param config delay setting
+///
+/// return  1 = time has lapse,
+///         0 = no time lapse,
+///        -1 = config is of an invalid pointer
+///////////////////////////////////////////////////////////////////////////////
+int_fast8_t Tick_DelayMs_NonBlocking(uint_fast8_t reset, TickType * config)
+{
+    uint32_t LapsedTick = 0;
+
+    if ( !config )
+    {
+        return -1; // error can't use null pointer
+    }
+
+    if ( reset )
+    {
+        config->StartMs = Tick_GetMs();
+        // reset the counter
+        return false;
+    }
+
+    // this will also gracefully handle tick overflow.
+    LapsedTick = (Tick_GetMs() - config->StartMs);
+
+    if( LapsedTick <  config->DelayMs )
+    {
+        return false;
+    }
+
+    return true;
+}
+///////////////////////////////////////////////////////////////////////////////
+/// \brief system delay in milisecond. This is a blocking function
+///
+/// \param delayMs how long to wait in milisecond
+///////////////////////////////////////////////////////////////////////////////
+void Tick_DelayMs(uint32_t delayMs)
+{
+    TickType TickConfig = {0, delayMs};
+
+    // reset tick counter
+    Tick_DelayMs_NonBlocking(true, &TickConfig);
+
+    // wait for set delay
+    while( false == Tick_DelayMs_NonBlocking(false, &TickConfig)) ;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief This is the FreeRtos Tick hook. this will update out tick counter
+///////////////////////////////////////////////////////////////////////////////
+void vApplicationTickHook( void ){
+        TickMs++;
+}

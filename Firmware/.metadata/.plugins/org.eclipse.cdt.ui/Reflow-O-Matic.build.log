@@ -1,0 +1,66 @@
+19:14:03 **** Incremental Build of configuration Debug for project Reflow-O-Matic ****
+make all 
+Building file: ../Terminal/DebugInterface.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -fno-move-loop-invariants -Wall -Wextra  -g3 -I"/home/vagrant/Documents/Reflow/Firmware/Reflow-O-Matic" -I"/home/vagrant/Documents/Reflow/Firmware/Reflow-O-Matic/CMSIS/Header" -std=gnu11 -MMD -MP -MF"Terminal/DebugInterface.d" -MT"Terminal/DebugInterface.o" -c -o "Terminal/DebugInterface.o" "../Terminal/DebugInterface.c"
+Finished building: ../Terminal/DebugInterface.c
+ 
+Building file: ../Terminal/Debug_MainMenu.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -fno-move-loop-invariants -Wall -Wextra  -g3 -I"/home/vagrant/Documents/Reflow/Firmware/Reflow-O-Matic" -I"/home/vagrant/Documents/Reflow/Firmware/Reflow-O-Matic/CMSIS/Header" -std=gnu11 -MMD -MP -MF"Terminal/Debug_MainMenu.d" -MT"Terminal/Debug_MainMenu.o" -c -o "Terminal/Debug_MainMenu.o" "../Terminal/Debug_MainMenu.c"
+Finished building: ../Terminal/Debug_MainMenu.c
+ 
+Building file: ../PID/pid.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -fno-move-loop-invariants -Wall -Wextra  -g3 -I"/home/vagrant/Documents/Reflow/Firmware/Reflow-O-Matic" -I"/home/vagrant/Documents/Reflow/Firmware/Reflow-O-Matic/CMSIS/Header" -std=gnu11 -MMD -MP -MF"PID/pid.d" -MT"PID/pid.o" -c -o "PID/pid.o" "../PID/pid.c"
+Finished building: ../PID/pid.c
+ 
+Building file: ../Driver/UART/Serial_1.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -fno-move-loop-invariants -Wall -Wextra  -g3 -I"/home/vagrant/Documents/Reflow/Firmware/Reflow-O-Matic" -I"/home/vagrant/Documents/Reflow/Firmware/Reflow-O-Matic/CMSIS/Header" -std=gnu11 -MMD -MP -MF"Driver/UART/Serial_1.d" -MT"Driver/UART/Serial_1.o" -c -o "Driver/UART/Serial_1.o" "../Driver/UART/Serial_1.c"
+../Driver/UART/Serial_1.c: In function 'Open':
+../Driver/UART/Serial_1.c:30:35: warning: unused parameter 'baudrate' [-Wunused-parameter]
+ static uint_fast8_t Open(uint32_t baudrate)
+                                   ^
+../Driver/UART/Serial_1.c: In function 'SendByte':
+../Driver/UART/Serial_1.c:59:31: warning: unused parameter 'source' [-Wunused-parameter]
+ uint_fast8_t SendByte(uint8_t source)
+                               ^
+Finished building: ../Driver/UART/Serial_1.c
+ 
+Building file: ../Driver/Tick/Tick.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -fno-move-loop-invariants -Wall -Wextra  -g3 -I"/home/vagrant/Documents/Reflow/Firmware/Reflow-O-Matic" -I"/home/vagrant/Documents/Reflow/Firmware/Reflow-O-Matic/CMSIS/Header" -std=gnu11 -MMD -MP -MF"Driver/Tick/Tick.d" -MT"Driver/Tick/Tick.o" -c -o "Driver/Tick/Tick.o" "../Driver/Tick/Tick.c"
+Finished building: ../Driver/Tick/Tick.c
+ 
+Building file: ../Driver/LED/LED.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -fno-move-loop-invariants -Wall -Wextra  -g3 -I"/home/vagrant/Documents/Reflow/Firmware/Reflow-O-Matic" -I"/home/vagrant/Documents/Reflow/Firmware/Reflow-O-Matic/CMSIS/Header" -std=gnu11 -MMD -MP -MF"Driver/LED/LED.d" -MT"Driver/LED/LED.o" -c -o "Driver/LED/LED.o" "../Driver/LED/LED.c"
+../Driver/LED/LED.c: In function 'LED_On':
+../Driver/LED/LED.c:19:7: error: 'GPIO_Type' has no member named 'BSRR'
+  GPIOA->BSRR |= ((uint32_t)1 << LED_PIN);
+       ^
+../Driver/LED/LED.c:17:26: warning: unused parameter 'led' [-Wunused-parameter]
+ void LED_On(LED_Selector led)
+                          ^
+../Driver/LED/LED.c: In function 'LED_Off':
+../Driver/LED/LED.c:27:7: error: 'GPIO_Type' has no member named 'BRR'
+  GPIOA->BRR |= ((uint32_t)1 << LED_PIN);
+       ^
+../Driver/LED/LED.c:25:27: warning: unused parameter 'led' [-Wunused-parameter]
+ void LED_Off(LED_Selector led)
+                           ^
+../Driver/LED/LED.c: In function 'LED_Toggle':
+../Driver/LED/LED.c:36:13: error: 'GPIO_Type' has no member named 'ODR'
+     if(GPIOA->ODR & (1<<LED_PIN))
+             ^
+../Driver/LED/LED.c:38:9: warning: implicit declaration of function 'IO_Off' [-Wimplicit-function-declaration]
+         IO_Off(led);
+         ^
+../Driver/LED/LED.c:42:9: warning: implicit declaration of function 'IO_On' [-Wimplicit-function-declaration]
+         IO_On(led);
+         ^
+make: *** [Driver/LED/LED.o] Error 1
+
+19:14:04 Build Finished (took 1s.199ms)
+

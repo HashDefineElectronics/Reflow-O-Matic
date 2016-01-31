@@ -1,0 +1,96 @@
+///////////////////////////////////////////////////////////////////////////////
+/// \file common.c
+/// \author Ronald Sousa
+/// \website www.HashDefineElectronics.com
+/// \company Hash Define Electronics Ltd
+///
+/// \brief  holds the common function used globaly
+///
+///
+/// \setion Project Dependency
+/// Compiler: Microchip XC32 v1.34
+/// library: Microchip Harmony v1.03.01
+/// IDE: Microchip MPLABX v2.26
+///////////////////////////////////////////////////////////////////////////////
+#include "common.h"
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief returns the string representation of the device serial number
+///
+/// \param destination pointer to copy the string into
+/// \param destinationMaxLength the maximum length the string will be
+///
+///
+///////////////////////////////////////////////////////////////////////////////
+void Common_GetDeviceSerialNumberAsString(  uint8_t *destination,
+                                            uint_fast8_t destinationMaxLength)
+{
+    strncpy((char *)destination, "EX-23May2015", destinationMaxLength);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief This function will convert a long double to string. null terminated
+/// It will limit the output to string to 15 significant decimal point.
+///
+/// \param destination poitner to return the process string
+/// \param destination length
+/// \param value this long double to convert
+///
+/// \return -1 when we reached the end of the buffer else the number of bytes written
+///////////////////////////////////////////////////////////////////////////////
+int32_t Common_LDoubleToString(    uint8_t *destination,
+                                    uint32_t destinationLength,
+                                    long double value)
+{
+    int32_t Result = -1;
+    int32_t BaseValue = value;          // removes the initial decimal after the point
+    long double ProccedValue = value;    // update the proccedvalue
+    int32_t ProccedNumberOfCharacters = 0;
+
+    if (!destination) // make sure that we have a point to work with
+    {
+        return -1;
+    }
+
+    // get the start of the string
+    Result = snprintf(destination, destinationLength, "%i.0", BaseValue);
+
+    if (Result < 0) // error
+    {
+        return -1;
+    }
+
+    // long double has a 15 -17 significant decimal digits precision.
+    // so there is no point to further process the double after this point.
+    // we also include the null character and the point character
+    if ( destinationLength > 17 )
+    {
+        // this will lime the for loop so that it stop after 15 significant decimal
+        // we also include the null character and the point character
+        destinationLength = 17;
+    }
+    ProccedNumberOfCharacters = Result;
+    destination += (Result - 1 ); // shift to override the zero we have written
+
+    for( ; ProccedNumberOfCharacters < destinationLength ; ProccedNumberOfCharacters++)
+    {
+        ProccedValue -= ((long double)BaseValue);
+        ProccedValue *= ((long double)10.0); // shift the decimal point
+        BaseValue = ProccedValue;
+
+        if (0 == BaseValue && 0.0 == ProccedValue) // we have no more data to process
+        {
+            return ProccedNumberOfCharacters;
+        }
+
+        *destination = '0' + BaseValue;
+        destination++;
+        *destination = 0;
+    }
+
+
+
+
+
+    return ProccedNumberOfCharacters;
+}

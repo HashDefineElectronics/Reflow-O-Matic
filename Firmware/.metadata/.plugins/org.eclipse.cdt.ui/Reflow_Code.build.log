@@ -1,0 +1,41 @@
+17:51:52 **** Incremental Build of configuration Default for project Reflow_Code ****
+make all 
+/usr/local/gcc-arm-none-eabi-4_9-2015q3/bin/arm-none-eabi-g++ -mcpu=cortex-m3 -mthumb  -c -g -fno-common -fmessage-length=0 -Wall -Wextra -fno-exceptions -ffunction-sections -fdata-sections -fomit-frame-pointer -MMD -MP -DNDEBUG -Os -DTOOLCHAIN_GCC_ARM -DTOOLCHAIN_GCC -DMBED_BUILD_TIMESTAMP=1454002924.92 -DARM_MATH_CM3 -DTARGET_CORTEX_M -DTARGET_LPC176X -DTARGET_NXP -DTARGET_MBED_LPC1768 -DTARGET_LPC1768 -D__CORTEX_M3 -DTARGET_M3 -D__MBED__=1  -std=gnu++98 -fno-rtti -I. -I./PID -I./mbed -I./mbed/TARGET_LPC1768 -I./mbed/TARGET_LPC1768/TOOLCHAIN_GCC_ARM  -o main.o main.cpp
+In file included from ./mbed/FileSystemLike.h:23:0,
+                 from ./mbed/LocalFileSystem.h:23,
+                 from ./mbed/mbed.h:56,
+                 from main.cpp:1:
+./mbed/DirHandle.h:85:32: warning: unused parameter 'location' [-Wunused-parameter]
+     virtual void seekdir(off_t location) { }
+                                ^
+In file included from ./mbed/LocalFileSystem.h:23:0,
+                 from ./mbed/mbed.h:56,
+                 from main.cpp:1:
+./mbed/FileSystemLike.h:64:36: warning: unused parameter 'filename' [-Wunused-parameter]
+     virtual int remove(const char *filename) { return -1; };
+                                    ^
+./mbed/FileSystemLike.h:75:36: warning: unused parameter 'oldname' [-Wunused-parameter]
+     virtual int rename(const char *oldname, const char *newname) { return -1; };
+                                    ^
+./mbed/FileSystemLike.h:75:57: warning: unused parameter 'newname' [-Wunused-parameter]
+     virtual int rename(const char *oldname, const char *newname) { return -1; };
+                                                         ^
+./mbed/FileSystemLike.h:86:44: warning: unused parameter 'name' [-Wunused-parameter]
+     virtual DirHandle *opendir(const char *name) { return NULL; };
+                                            ^
+./mbed/FileSystemLike.h:97:35: warning: unused parameter 'name' [-Wunused-parameter]
+     virtual int mkdir(const char *name, mode_t mode) { return -1; }
+                                   ^
+./mbed/FileSystemLike.h:97:48: warning: unused parameter 'mode' [-Wunused-parameter]
+     virtual int mkdir(const char *name, mode_t mode) { return -1; }
+                                                ^
+main.cpp:24:62: warning: missing initializer for member 'PIDType::IntergralError' [-Wmissing-field-initializers]
+ PIDType HeaterPID = {HeaterPID_P, HeaterPID_I, HeaterPID_D, 0};
+                                                              ^
+main.cpp:60:1: error: 'a' does not name a type
+ a
+ ^
+make: *** [main.o] Error 1
+
+17:51:52 Build Finished (took 504ms)
+

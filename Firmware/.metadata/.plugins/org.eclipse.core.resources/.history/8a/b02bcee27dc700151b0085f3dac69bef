@@ -1,0 +1,97 @@
+#include "mbed.h"
+#include "pid.h"
+#include "configuration.h"
+#include <stdint.h>
+
+DigitalOut myled(LED_GREEN);
+AnalogIn Probe(A2);
+Serial pc(USBTX, USBRX); // tx, rx
+
+//This is the timer function used to call our monitor function
+Ticker TimerInterrupt;
+
+PwmOut HeaterPWM(D3);
+PwmOut MotorPWM(D5);
+
+volatile float FilterTemperatureRaw = 0.0;
+volatile float TemperatureFilterConstant = 0.2;
+volatile float ConvertionConstant = 330.0;
+volatile float PWMOutput = 0;
+
+volatile float MotorPWMValue = 0;
+volatile float TargetTempeprature = 0;
+///////////////////////////////////////////////////////////////////////////
+/// \brief Defines the PID parameter for the heater
+///////////////////////////////////////////////////////////////////////////
+PIDType HeaterPID = {HeaterPID_P, HeaterPID_I, HeaterPID_D, 0};
+
+
+void MonitorTemperature(void)
+{
+    // 330 is the conversion constant.
+    FilterTemperatureRaw += (TemperatureFilterConstant * (Probe.read()- FilterTemperatureRaw));
+    PWMOutput =  PID_Process(&HeaterPID, TargetTempeprature, (FilterTemperatureRaw * ConvertionConstant)-3.9);
+    HeaterPWM.write(PWMOutput);
+}
+
+volatile uint32_t ReadByteState = false;
+
+void SerialInterrupt(void)
+{
+    while(pc.readable())
+    {
+        if (ReadByteState)
+        {
+            MotorPWMValue = pc.getc();
+            if(MotorPWMValue > 0)
+            {
+                MotorPWMValue /= 0xFF;
+            }
+            MotorPWM.write(MotorPWMValue);
+            // Get the Target temperature
+            ReadByteState = false;
+        }
+        else
+        {
+            TargetTempeprature = pc.getc();
+            ReadByteState = true;
+            //HeaterPWM.write((TargetTempeprature/10));
+        }
+    }
+}
+
+int main(void)
+{
+	char Message[100];
+
+    float Temp;
+    float PWMOutputTemp;
+    float TargetTempepratureTemp;
+    float MotorPWMValueTemp;
+
+    pc.baud(230400);
+    pc.printf("Start\n");
+
+    pc.attach(&SerialInterrupt, Serial::RxIrq);
+    HeaterPWM.period_ms(1000);
+    MotorPWM.period_ms(1000);
+
+    //Setup our interval interrupt
+    TimerInterrupt.attach(&MonitorTemperature, 0.01); // the address of the function to be attached (flip) and the interval (2 seconds)
+
+
+    while(1)
+    {
+        __disable_irq();
+         Temp = (FilterTemperatureRaw * ConvertionConstant)-3.9,
+         PWMOutputTemp = PWMOutput;
+         TargetTempepratureTemp = TargetTempeprature;
+         MotorPWMValueTemp = MotorPWMValue;
+
+        snprintf(&Message[0],100, "%0.2f %f %f %f\n\r", Temp, PWMOutputTemp, TargetTempepratureTemp, MotorPWMValueTemp);
+        __enable_irq();
+        pc.printf(Message);
+
+        wait(0.5);
+    }
+}

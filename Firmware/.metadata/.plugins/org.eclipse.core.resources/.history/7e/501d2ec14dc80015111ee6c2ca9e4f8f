@@ -1,0 +1,15 @@
+///////////////////////////////////////////////////////////////////////////////
+/// \file IO.h
+/// \author Ronald Sousa
+/// \website www.HashDefineElectronics.com
+/// \company Hash Define Electronics Ltd
+///
+/// \brief  define the IO header
+///////////////////////////////////////////////////////////////////////////////
+
+#ifndef __UART_1_INTERFACE_H__
+#define __UART_1_INTERFACE_H__
+    #include "../../common.h"
+
+#endif
+

@@ -1,0 +1,13 @@
+23:18:35 **** Incremental Build of configuration Debug for project Reflow-O-Matic-STM32 ****
+make all 
+Building file: ../system/src/newlib/_cxx.cpp
+Invoking: Cross ARM C++ Compiler
+arm-none-eabi-g++ -mcpu=cortex-m0 -mthumb -O3 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -fno-move-loop-invariants -Wall -Wextra  -g3 -DDEBUG -DUSE_FULL_ASSERT -DTRACE -DOS_USE_TRACE_SEMIHOSTING_DEBUG -DSTM32F030 -DUSE_STDPERIPH_DRIVER -DHSE_VALUE=8000000 -I"/home/vagrant/Documents/Reflow/Firmware/Lesson_10 - Terminal Program - Part 4/include" -I"/home/vagrant/Documents/Reflow/Firmware/Lesson_10 - Terminal Program - Part 4/system/include" -I"/home/vagrant/Documents/Reflow/Firmware/Lesson_10 - Terminal Program - Part 4/system/include/cmsis" -I"/home/vagrant/Documents/Reflow/Firmware/Lesson_10 - Terminal Program - Part 4/system/include/stm32f0-stdperiph" -std=gnu++11 -fabi-version=0 -fno-exceptions -fno-rtti -fno-use-cxa-atexit -fno-threadsafe-statics -MMD -MP -MF"system/src/newlib/_cxx.d" -MT"system/src/newlib/_cxx.o" -c -o "system/src/newlib/_cxx.o" "../system/src/newlib/_cxx.cpp"
+../system/src/newlib/_cxx.cpp:15:24: fatal error: diag/Trace.h: No such file or directory
+ #include "diag/Trace.h"
+                        ^
+compilation terminated.
+make: *** [system/src/newlib/_cxx.o] Error 1
+
+23:18:35 Build Finished (took 60ms)
+

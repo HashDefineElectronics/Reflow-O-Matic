@@ -1,0 +1,11 @@
+16:59:17 **** Incremental Build of configuration Release for project jv ****
+make all 
+Invoking: Cross ARM GNU Print Size
+arm-none-eabi-size --format=berkeley "jv.elf"
+   text	   data	    bss	    dec	    hex	filename
+   1538	     68	    264	   1870	    74e	jv.elf
+Finished building: jv.siz
+ 
+
+16:59:18 Build Finished (took 61ms)
+

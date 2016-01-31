@@ -1,0 +1,79 @@
+///////////////////////////////////////////////////////////////////////////////
+/// \file common.h
+/// \author Ronald Sousa
+/// \website www.HashDefineElectronics.com
+/// \company Hash Define Electronics Ltd
+///
+/// \brief  Contains common code and definitions
+///
+///
+/// \setion Project Dependency
+/// Compiler: Microchip XC32 v1.34
+/// library: Microchip Harmony v1.03.01
+/// IDE: Microchip MPLABX v2.26
+///////////////////////////////////////////////////////////////////////////////
+
+#ifndef __COMMON_H__
+#define __COMMON_H__
+	#include "mbed.h"
+	#include <stdint.h>
+	#include "Driver/SeriaStructure.h"
+	#include "Driver/Tick/Tick.h"
+	#include "Debug/DebugInterface.h"
+	#include "PID/pid.h"
+	#include "configuration.h"
+
+
+    ///////////////////////////////////////////////////////////////////////////////
+    /// \brief Firmware version
+    /// D = development version of the firmware. Should only be used for testing purposes
+    /// C = concession version. This version of the firmware is usual custome for a customer. see CONCESSION_NUMBER
+    /// P = production version
+    ///
+    /// \sa CONCESSION_NUMBER
+    ///////////////////////////////////////////////////////////////////////////////
+    #define FIRMWARE_VERSION "00.0001D"
+
+    ///////////////////////////////////////////////////////////////////////////////
+    /// \brief If the firmware is a cocession version, then it has to have
+    /// a concession number to go with it. This numeber is usualy a customer contract
+    /// number.
+    ///////////////////////////////////////////////////////////////////////////////
+    #define CONCESSION_NUMBER "00.00000"
+
+    ///////////////////////////////////////////////////////////////////////////////
+    /// \brief Hardware version
+    ///////////////////////////////////////////////////////////////////////////////
+    #define HARDWARE_VERSION "00"
+
+    ///////////////////////////////////////////////////////////////////////////////
+    /// \brief Hardware version
+    ///////////////////////////////////////////////////////////////////////////////
+    #define COMPILED_DATA_TIME "[" __DATE__ " " __TIME__ "]"
+
+    ///////////////////////////////////////////////////////////////////////////////
+    /// \brief Enables the debug interface and all debug message associated
+    ///////////////////////////////////////////////////////////////////////////////
+    #define EN_DEBUG_INTERFACE
+
+    ///////////////////////////////////////////////////////////////////////////////
+    /// \brief define the union type used to convert between types.
+    ///////////////////////////////////////////////////////////////////////////////
+    typedef union {
+        long double d34_t;      ///< 64bit IEEE floating point number
+        float       f32_t[2];   ///< 32bit IEEE float point number
+        uint32_t    ui32_t[2];  ///< unsigned 32bit.
+        int32_t     i32_t[2];   ///< signed 32bit.
+        uint16_t    ui16_t[4];  ///< unsigned 16bit.
+        int16_t     i16_t[4];   ///< signed 16bit.
+        uint8_t     ui8_t[8];   ///< unsigned 8bit.
+        int8_t      i8_t[8];    ///< singed 8bit.
+    }DataConverter;
+
+    int32_t Common_LDoubleToString( uint8_t *destination,
+                                    uint32_t destinationLength,
+                                    long double value);
+
+    void Common_GetDeviceSerialNumberAsString(  uint8_t *destination,
+                                                uint_fast8_t destinationMaxLength);
+#endif

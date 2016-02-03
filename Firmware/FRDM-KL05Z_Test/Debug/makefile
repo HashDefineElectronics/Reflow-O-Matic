@@ -33,38 +33,38 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 SECONDARY_FLASH += \
-Reflow-O-Matic.hex \
+FRDM-KL05Z_Test.hex \
 
 SECONDARY_SIZE += \
-Reflow-O-Matic.siz \
+FRDM-KL05Z_Test.siz \
 
 
 # All Target
-all: Reflow-O-Matic.elf secondary-outputs
+all: FRDM-KL05Z_Test.elf secondary-outputs
 
 # Tool invocations
-Reflow-O-Matic.elf: $(OBJS) $(USER_OBJS)
+FRDM-KL05Z_Test.elf: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross ARM C Linker'
-	arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -fno-move-loop-invariants -Wall -Wextra  -g3 -T "/home/vagrant/Documents/Reflow/Firmware/Reflow-O-Matic/CMSIS/Source/MKL05Z32xxx4_flash.ld" -Xlinker --gc-sections -Wl,-Map,"Reflow-O-Matic.map" --specs=nano.specs --specs=nosys.specs -o "Reflow-O-Matic.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+	arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -fno-move-loop-invariants -Wall -Wextra  -g3 -T "/home/vagrant/Documents/Reflow-O-Matic/Firmware/FRDM-KL05Z_Test/CMSIS/Source/MKL05Z32xxx4_flash.ld" -Xlinker --gc-sections -Wl,-Map,"FRDM-KL05Z_Test.map" --specs=nano.specs --specs=nosys.specs -o "FRDM-KL05Z_Test.elf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-Reflow-O-Matic.hex: Reflow-O-Matic.elf
+FRDM-KL05Z_Test.hex: FRDM-KL05Z_Test.elf
 	@echo 'Invoking: Cross ARM GNU Create Flash Image'
-	arm-none-eabi-objcopy -O ihex "Reflow-O-Matic.elf"  "Reflow-O-Matic.hex"
+	arm-none-eabi-objcopy -O ihex "FRDM-KL05Z_Test.elf"  "FRDM-KL05Z_Test.hex"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-Reflow-O-Matic.siz: Reflow-O-Matic.elf
+FRDM-KL05Z_Test.siz: FRDM-KL05Z_Test.elf
 	@echo 'Invoking: Cross ARM GNU Print Size'
-	arm-none-eabi-size --format=berkeley "Reflow-O-Matic.elf"
+	arm-none-eabi-size --format=berkeley "FRDM-KL05Z_Test.elf"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(SECONDARY_SIZE)$(OBJS)$(C_DEPS)$(ASM_DEPS)$(SECONDARY_FLASH)$(S_UPPER_DEPS) Reflow-O-Matic.elf
+	-$(RM) $(SECONDARY_SIZE)$(OBJS)$(C_DEPS)$(ASM_DEPS)$(SECONDARY_FLASH)$(S_UPPER_DEPS) FRDM-KL05Z_Test.elf
 	-@echo ' '
 
 secondary-outputs: $(SECONDARY_FLASH) $(SECONDARY_SIZE)

@@ -6,12 +6,16 @@
 ////////////////////////////////////////////////////////////////////////////////
 #ifndef __COMMON_H__
 #define __COMMON_H__
+	#include "stm32f0xx.h"
 	#include <stdio.h>
 	#include <stdlib.h>
-	#include "stm32f0xx.h"
 	#include "MCU/usart2.h"
 	#include "MCU/tick.h"
 	#include "MCU/led.h"
+	#include "MCU/pwm.h"
+	#include "MCU/temperature.h"
+	#include "pid.h"
+	#include "OvenControl.h"
 
 	/////////////////////////////////////////////////////////////////////////
 	///	\brief	Defines the true state

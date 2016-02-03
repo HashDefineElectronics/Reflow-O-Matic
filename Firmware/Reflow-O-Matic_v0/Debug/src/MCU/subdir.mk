@@ -5,16 +5,22 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../src/MCU/led.c \
+../src/MCU/pwm.c \
+../src/MCU/temperature.c \
 ../src/MCU/tick.c \
 ../src/MCU/usart2.c 
 
 OBJS += \
 ./src/MCU/led.o \
+./src/MCU/pwm.o \
+./src/MCU/temperature.o \
 ./src/MCU/tick.o \
 ./src/MCU/usart2.o 
 
 C_DEPS += \
 ./src/MCU/led.d \
+./src/MCU/pwm.d \
+./src/MCU/temperature.d \
 ./src/MCU/tick.d \
 ./src/MCU/usart2.d 
 

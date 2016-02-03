@@ -1,0 +1,15 @@
+00:42:35 **** Build of configuration Debug for project FRDM-KL05Z_Test ****
+make all 
+Building file: ../Driver/LED/LED.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -fno-move-loop-invariants -Wall -Wextra  -g3 -I"/home/vagrant/Documents/Reflow-O-Matic/Firmware/FRDM-KL05Z_Test" -std=gnu11 -MMD -MP -MF"Driver/LED/LED.d" -MT"Driver/LED/LED.o" -c -o "Driver/LED/LED.o" "../Driver/LED/LED.c"
+In file included from ../Driver/LED/LED.h:12:0,
+                 from ../Driver/LED/LED.c:7:
+../Driver/LED/../../common.h:18:22: fatal error: MKL05Z4.h: No such file or directory
+  #include "MKL05Z4.h"
+                      ^
+compilation terminated.
+make: *** [Driver/LED/LED.o] Error 1
+
+00:42:35 Build Finished (took 160ms)
+

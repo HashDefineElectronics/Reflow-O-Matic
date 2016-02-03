@@ -1,0 +1,107 @@
+/////////////////////////////////////////////////////////////////////////
+///	\file temperature.c
+///	\brief this is the adc hardware interface layer.
+///
+///	Author: Ronald Sousa (@Opticalworm)
+/////////////////////////////////////////////////////////////////////////
+#include "common.h"
+#define EN_ADC_SELF_CALIBRATION
+
+volatile float ConvertionConstant = 330.0;
+static const uint32_t AdcResoluton = 4096;
+static float TemperatureFilterConstant = 0.2;
+
+#ifdef EN_ADC_SELF_CALIBRATION
+	/////////////////////////////////////////////////////////////////////////
+	/// \brief holds the calibration factor of STM32.
+	///
+	///	\note its  only ADCSelfCalibrationFactor[6 : 0] that holds the factor
+	/////////////////////////////////////////////////////////////////////////
+	static uint32_t ADCSelfCalibrationFactor = 0;
+#endif
+
+/////////////////////////////////////////////////////////////////////////
+///	\brief Configures the ADC for single shot, 12bit, sample ADC_IN4 [A2 PA4]
+///	1.5ADC clock cycles. uses the ADC dedicated clock 14mHz
+/////////////////////////////////////////////////////////////////////////
+void Temperature_Init(void)
+{
+	RCC->APB2ENR |= ((uint32_t)1<<9); // enable ADC clock
+
+	// configure port
+	GPIOA->MODER  |= ((uint32_t)0x3 << 8);    // set the PA_4 to ADC mode
+	GPIOA->OTYPER &= ~((uint32_t)1 << 4); 	// set it to push-pull
+	GPIOA->OSPEEDR |= ((uint32_t)3 << 8);	// set to 50Mhz
+	GPIOA->PUPDR &= ~((uint32_t)2 << 8);	// no pull up/down resistor
+
+	ADC1->CR &= ~ADC_CR_ADEN; // disable the ADC
+
+	ADC1->SMPR = 0; //Set the ADC sample rate to 1.5 ADC clock cycles
+	ADC1->CHSELR = ((uint32_t)(1<<4)); // set channel ADC_IN4
+
+#ifdef EN_ADC_SELF_CALIBRATION
+
+	// we are going to run the ADC self calibration
+	ADC1->CR |= ADC_CR_ADCAL; // enable the calibration
+
+	while(ADC1->CR & ADC_CR_ADCAL); // wait until calibration is done
+
+	ADCSelfCalibrationFactor = ADC1->DR; // read the calibration self calibration factor
+
+#endif
+
+	ADC1->CR |= ADC_CR_ADEN;
+
+	while( !(ADC1->ISR & ADC_ISR_ADRDY)) ; // wait until the ADC is ready to start conversion
+
+
+}
+
+/////////////////////////////////////////////////////////////////////////
+///	\brief read the temperature, voltage or normalized ADC value
+///
+///	\param temperature pointer to return the filtered temperature value
+///	\param voltage pointer to return the un-filtered voltage
+///	\param normalinormalizedsed pointer to return the un-filtered normalized value
+///
+///	\return FALSE no data to read, TRUE success, ERROR pointer error or ADC is not enabled
+/////////////////////////////////////////////////////////////////////////
+uint_fast8_t  Temperature_Read(float *temperature, float *voltage, float *normalized)
+{
+	float FilterTemperatureRaw = 0.0;
+	uint32_t TempReading;
+
+	// return error pointer is invalid or the ADC is not on
+	if (!( ADC1->CR & ADC_CR_ADEN ) )
+	{
+		return ERROR;
+	}
+
+	ADC1->CR |= ADC_CR_ADSTART;
+
+	while ( !(ADC1->ISR |= ADC_ISR_EOC) ) ; // wait until the conversion is done
+
+	TempReading = ADC1->DR;
+
+	FilterTemperatureRaw += (TemperatureFilterConstant * (((float)TempReading/AdcResoluton) - FilterTemperatureRaw));
+
+	if ( temperature )
+	{
+		*temperature = (FilterTemperatureRaw * ConvertionConstant) - 3.9;
+	}
+
+	if( voltage )
+	{
+		// return the voltage if the pointer is valid
+		*voltage = ((float)TempReading / AdcResoluton) * 3.3;
+	}
+
+	if ( normalized )
+	{
+		*normalized = ((float)TempReading / AdcResoluton);
+	}
+
+
+
+	return TRUE;
+}

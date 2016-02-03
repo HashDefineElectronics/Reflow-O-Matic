@@ -47,7 +47,7 @@ void Led_Toggle(void)
 /////////////////////////////////////////////////////////////////////////
 void Led_Init(void)
 {
-	RCC->AHBENR |= ((uint32_t)1<<17); // enable port A clock
+	RCC->AHBENR |= ((uint32_t)RCC_AHBENR_GPIOAEN); // enable port A clock
 
 	// configure port
 	GPIOA->MODER  &= ~((uint32_t)0x3 << 10);    // clear the related bits before we set them. Comment the next call will set all bits.

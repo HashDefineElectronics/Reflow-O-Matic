@@ -1,0 +1,111 @@
+///////////////////////////////////////////////////////////////////////////////
+/// \file Debug_MainMenu.h
+/// \author Ronald Sousa
+/// \website www.HashDefineElectronics.com
+/// \company Hash Define Electronics Ltd
+///
+/// \brief  handles the debug main screen used by our serial interface
+///////////////////////////////////////////////////////////////////////////////
+#include "./Terminal/Terminal.h"
+#include "common.h"
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief set the process update rate to 100ms
+///////////////////////////////////////////////////////////////////////////////
+static TickType UpdateMessages = { 0 , 500} ;
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Draw main menu
+///////////////////////////////////////////////////////////////////////////////
+static void DrawMainMenu(void)
+{
+    Terminal_WriteString( (uint8_t*)"\n\r"
+                        "S1. Everything Off\n\r"
+    					"Sq. Set LED State\n\r"
+    					"S1. Set LED State\n\r"
+    					"S4. Set LED State\n\r");
+}
+///////////////////////////////////////////////////////////////////////////////
+/// \brief This is the menu options
+///////////////////////////////////////////////////////////////////////////////
+typedef enum
+{
+    SDCommand_EverythingOff = 1,
+	SDCommand_SetTargettemperature,
+	SDCommand_SetMotor,
+	SDCommand_LEDControl,
+} SDebug_CommandCode;
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Process the screen command
+///
+/// \param SystemData system parameter data structure
+/// \return true on success else false
+///////////////////////////////////////////////////////////////////////////////
+static struct SDMenuStruture * MainMenu(TerminalType *SystemData)
+{
+
+    switch(SystemData->Parameter[0].Data.ui32_t[0])
+    {
+        case SDCommand_LEDControl:
+
+            if( SystemData->ParameterLength > 1)
+            {
+                if(SystemData->Parameter[1].Data.ui32_t[0])
+                {
+                	Led_On();
+                	PWM_SetDuty(PWMPin1, 1);
+                }
+                else
+                {
+                	Led_Off();
+                	PWM_SetDuty(PWMPin1, 0);
+                }
+                OvenControl_SetTemperature(SystemData->Parameter[1].Data.ui32_t[0]);
+            }
+            else
+            {
+            	Led_Toggle();
+            	PWM_SetDuty(PWMPin2, 0.5);
+            	OvenControl_SetTemperature(0);
+		}
+
+        break;
+        default:
+            break;
+    }
+
+    return 0;
+}
+
+void Process (uint8_t *character)
+{
+	float Temperature = 0;
+	float TargetTemperature = 0;
+	float HeaterPWM = 0;
+	char MessageBuffer[50];
+
+	if(!character)
+	{
+		OvenControl_Process(&Temperature, &TargetTemperature, &HeaterPWM);
+
+        // check if we need to update the screen
+         if ( Tick_DelayMs_NonBlocking(FALSE, &UpdateMessages) )
+         {
+             // reset the tick counter
+             Tick_DelayMs_NonBlocking(TRUE, &UpdateMessages);
+ 			snprintf((char *)&MessageBuffer[0], 25, "\n\r%4.4f\t%4.4f\t%4.4f",Temperature, TargetTemperature, HeaterPWM);
+ 			Terminal_WriteString(&MessageBuffer[0]);
+         }
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief This is the defualt menu screen
+///////////////////////////////////////////////////////////////////////////////
+struct SDMenuStruture  DefaultMenu = {
+    (uint8_t *)"Main Menu",
+    DrawMainMenu,
+	Process,
+    MainMenu
+};

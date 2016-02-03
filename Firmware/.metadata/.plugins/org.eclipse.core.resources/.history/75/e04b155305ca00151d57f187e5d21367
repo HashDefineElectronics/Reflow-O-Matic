@@ -1,0 +1,49 @@
+///////////////////////////////////////////////////////////////////////////
+/// \file OvenControl.cpp
+/// \brief Handles controller the temperature of the oven. this will also control the cooling fan
+/// \author Ronald Sousa
+///////////////////////////////////////////////////////////////////////////
+#include "common.h"
+#include "configuration.h"
+
+///////////////////////////////////////////////////////////////////////////
+/// \brief Defines the PID parameter for the heater
+///////////////////////////////////////////////////////////////////////////
+PIDType HeaterPID = {HeaterPID_P, HeaterPID_I, HeaterPID_D, 0, 0};
+
+static float TargetTemperature = 0;
+
+///////////////////////////////////////////////////////////////////////////
+/// \brief Configures the hardware to
+///////////////////////////////////////////////////////////////////////////
+void OvenControl_Init(void)
+{
+	Temperature_Init();
+	PID_Init();
+	PWM_Init(1, 0); // set to 1hz and set motors to off
+
+}
+
+void OvenControl_Process(void)
+{
+	float temperature = 0;
+    /*// 330 is the conversion constant.
+    FilterTemperatureRaw += (TemperatureFilterConstant * (Probe.read()- FilterTemperatureRaw));
+    PWMOutput =  PID_Process(&HeaterPID, TargetTempeprature, (FilterTemperatureRaw * ConvertionConstant)-3.9);
+    HeaterPWM.write(PWMOutput);*/
+
+	//Temperature_Read(&temperature, 0, 0);
+	Temperature_Read(0, 0, &temperature);
+
+
+
+}
+
+void OvenControl_SetTemperature(float temperature)
+{
+	TargetTemperature = temperature;
+	PWM_SetDuty(PWMPinSelectType pin, TargetTemperature);
+}
+
+
+

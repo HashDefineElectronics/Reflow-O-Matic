@@ -1,0 +1,14 @@
+////////////////////////////////////////////////////////////////////////////////
+/// \file led.h
+/// Author: Ronald Sousa (@Opticalworm)
+////////////////////////////////////////////////////////////////////////////////
+
+#ifndef __ADC_H__
+#define __ADC_H__
+
+	#include "common.h"
+
+	void Temperature_Init(void);
+	uint_fast8_t  Temperature_Read(float * result, float *voltage);
+
+#endif

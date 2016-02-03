@@ -82,7 +82,7 @@
     typedef struct SDMenuStruture{
         uint8_t *MenuTitle;                                                  ///< define the menu title
         void (*DrawOptions)(void);                                           ///< define the draw menu options
-        void (*Process )(uint8_t *character);                                ///< define the process screen. this screen is passed every charater we've detect on the screen
+        void (*Process )(uint8_t *character);                                ///< define the process screen. this screen is passed every character we've detect on the screen
         struct SDMenuStruture * (* MenuPointer) (TerminalType *systemData);    ///< define the current menu pointer that will handle the input data
     }SDMenuStruture;
 

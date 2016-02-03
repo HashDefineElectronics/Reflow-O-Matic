@@ -20,19 +20,19 @@
 		<item value="Aggregate for window 1454080260844" key="ResourceWorkingSetFilter.STORE_WORKING_SET"/>
 		<item value="1" key="ResourceViewer.STORE_SORT_TYPE"/>
 	</section>
+	<section name="CleanDialogSettings">
+		<item value="569" key="DIALOG_WIDTH"/>
+		<item value="false" key="BUILD_NOW"/>
+		<item value="true" key="BUILD_ALL"/>
+		<item value="218" key="DIALOG_Y_ORIGIN"/>
+		<item value="474" key="DIALOG_HEIGHT"/>
+		<item value="711" key="DIALOG_X_ORIGIN"/>
+		<item value="false" key="TOGGLE_SELECTED"/>
+	</section>
 	<section name="NewWizardAction">
 		<item value="org.eclipse.cdt.ui.wizards.NewCWizard2" key="NewWizardSelectionPage.STORE_SELECTED_ID"/>
 		<list key="NewWizardSelectionPage.STORE_EXPANDED_CATEGORIES_ID">
 			<item value="org.eclipse.cdt.ui.newCWizards"/>
 		</list>
-	</section>
-	<section name="CleanDialogSettings">
-		<item value="569" key="DIALOG_WIDTH"/>
-		<item value="false" key="BUILD_NOW"/>
-		<item value="218" key="DIALOG_Y_ORIGIN"/>
-		<item value="true" key="BUILD_ALL"/>
-		<item value="711" key="DIALOG_X_ORIGIN"/>
-		<item value="474" key="DIALOG_HEIGHT"/>
-		<item value="false" key="TOGGLE_SELECTED"/>
 	</section>
 </section>

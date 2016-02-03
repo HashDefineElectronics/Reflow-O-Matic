@@ -14,7 +14,6 @@ RM := rm -rf
 -include system/src/cortexm/subdir.mk
 -include system/src/cmsis/subdir.mk
 -include src/Terminal/subdir.mk
--include src/PID/subdir.mk
 -include src/MCU/subdir.mk
 -include src/subdir.mk
 -include subdir.mk
@@ -51,7 +50,7 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 SECONDARY_FLASH += \
-Reflow-O-Matic_v0.hex \
+Reflow-O-Matic_v0.bin \
 
 SECONDARY_SIZE += \
 Reflow-O-Matic_v0.siz \
@@ -64,13 +63,13 @@ all: Reflow-O-Matic_v0.elf secondary-outputs
 Reflow-O-Matic_v0.elf: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross ARM C++ Linker'
-	arm-none-eabi-g++ -mcpu=cortex-m0 -mthumb -Og -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -fno-move-loop-invariants -Wall -Wextra  -g3 -T mem.ld -T libs.ld -T sections.ld -nostartfiles -Xlinker --gc-sections -L"../ldscripts" -Wl,-Map,"Reflow-O-Matic_v0.map" --specs=nano.specs -o "Reflow-O-Matic_v0.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+	arm-none-eabi-g++ -mcpu=cortex-m0 -mthumb -Og -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -fno-move-loop-invariants -Wall -Wextra  -g3 -T mem.ld -T libs.ld -T sections.ld -nostartfiles -Xlinker --gc-sections -L"../ldscripts" -Wl,-Map,"Reflow-O-Matic_v0.map" --specs=nano.specs -u _printf_float -o "Reflow-O-Matic_v0.elf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-Reflow-O-Matic_v0.hex: Reflow-O-Matic_v0.elf
+Reflow-O-Matic_v0.bin: Reflow-O-Matic_v0.elf
 	@echo 'Invoking: Cross ARM GNU Create Flash Image'
-	arm-none-eabi-objcopy -O ihex "Reflow-O-Matic_v0.elf"  "Reflow-O-Matic_v0.hex"
+	arm-none-eabi-objcopy -O binary "Reflow-O-Matic_v0.elf"  "Reflow-O-Matic_v0.bin"
 	@echo 'Finished building: $@'
 	@echo ' '
 

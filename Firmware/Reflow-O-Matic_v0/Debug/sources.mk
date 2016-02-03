@@ -29,7 +29,6 @@ S_UPPER_DEPS :=
 SUBDIRS := \
 src \
 src/MCU \
-src/PID \
 src/Terminal \
 system/src/cmsis \
 system/src/cortexm \

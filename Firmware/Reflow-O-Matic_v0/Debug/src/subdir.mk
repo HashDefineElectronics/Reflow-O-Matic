@@ -5,18 +5,24 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../src/FIFO.c \
+../src/OvenControl.c \
 ../src/common.c \
-../src/main.c 
+../src/main.c \
+../src/pid.c 
 
 OBJS += \
 ./src/FIFO.o \
+./src/OvenControl.o \
 ./src/common.o \
-./src/main.o 
+./src/main.o \
+./src/pid.o 
 
 C_DEPS += \
 ./src/FIFO.d \
+./src/OvenControl.d \
 ./src/common.d \
-./src/main.d 
+./src/main.d \
+./src/pid.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

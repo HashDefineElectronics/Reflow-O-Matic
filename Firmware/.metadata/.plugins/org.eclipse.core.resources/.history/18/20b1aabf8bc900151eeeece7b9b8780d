@@ -1,0 +1,42 @@
+/////////////////////////////////////////////////////////////////////////
+///	\file main.c
+///	\brief This is the main program code.
+///
+///	\author Ronald Sousa (Opticalworm)
+/////////////////////////////////////////////////////////////////////////
+#include "common.h"
+#include "Terminal/Terminal.h"
+
+
+/////////////////////////////////////////////////////////////////////////
+///	\brief Configure the MCU. set D7 to output the system clock
+/////////////////////////////////////////////////////////////////////////
+void HardwareSetup(void)
+{
+	RCC->AHBENR |= ((uint32_t)1<<17); // enable port A clock
+	// configure port
+	GPIOA->MODER  &= ~((uint32_t)0x3 << 16);    // clear modder
+	GPIOA->MODER  |= ((uint32_t)0x2 << 16);    // set the PA_8 to alternative function
+	GPIOA->OTYPER &= ~((uint32_t)1 << 4); 	// set it to push-pull
+	GPIOA->OSPEEDR |= ((uint32_t)3 << 8);	// set to 50Mhz
+	GPIOA->PUPDR &= ~((uint32_t)2 << 8);	// no pull up/down resistor
+}
+
+/////////////////////////////////////////////////////////////////////////
+///	\brief the first user code function to be called after the ARM M0
+///	has initial.
+/////////////////////////////////////////////////////////////////////////
+void main(void)
+{
+	HardwareSetup();
+	Tick_init();
+	Led_Init();
+	Temperature_Init();
+	Terminal_Init(&SerialPort2);
+
+    for ( ;; )
+    {
+    	Terminal_Monitor();
+
+    }
+}

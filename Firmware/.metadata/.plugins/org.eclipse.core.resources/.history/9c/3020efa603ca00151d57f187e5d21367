@@ -1,0 +1,14 @@
+////////////////////////////////////////////////////////////////////////////////
+/// \file TempMonitor.h
+/// Author: Ronald Sousa (@Opticalworm)
+////////////////////////////////////////////////////////////////////////////////
+
+#ifndef __TEMPERATURE_MONITOR_H__
+#define __TEMPERATURE_MONITOR_H__
+	#include "common.h"
+
+
+	void TempMonitor_Init(void);
+	void TempMonitor_SetTemperature(float temperature);
+
+#endif

@@ -1,0 +1,19 @@
+////////////////////////////////////////////////////////////////////////////////
+/// \file pwm.h
+///	Author: Ronald Sousa (@Opticalworm)
+////////////////////////////////////////////////////////////////////////////////
+
+#ifndef __USART_TWO_MCU_H__
+#define __USART_TWO_MCU_H__
+
+	#include "common.h"
+
+	typedef enum{
+		PWMPin1,
+		PWMPin2,
+	}PWMPinSelectType;
+
+	void PWM_Init(void);
+	void PWM_SetDuty(PWMPinSelectType pin, float duty);
+
+#endif

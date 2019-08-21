@@ -51,8 +51,8 @@ void PWM_Init(uint32_t frequencyHz, float initialtDuty)
 	TIM3->CR1 |= TIM_CR1_CEN;
 	TIM3->EGR |= TIM_EGR_UG;
 
-	PWM_SetDuty(PWMPin1, initialtDuty);
-	PWM_SetDuty(PWMPin2, initialtDuty);
+	PWM_SetDuty(HeaterPwmPin, initialtDuty);
+	PWM_SetDuty(MoterPwmPin, initialtDuty);
 
 
 
@@ -71,49 +71,48 @@ void PWM_SetDuty(PWMPinSelectType pin, float duty)
 {
 
 	// clamp the duty ration to the range 0 - 1
-	if ( duty < 0 )
-	{
+	if ( duty < 0 ) {
 		duty = 0;
 	}
-	else if ( duty > 1 )
-	{
+	else if ( duty > 1 ) {
 		duty = 1;
 	}
 
-	if ( PWMPin1 == pin )
-	{
-		/*if (1 == duty)
-		{
-			TIM3->CCMR1 =  (TIM3->CCMR1 & ((uint32_t) 7 << 4)) | ((uint32_t) 5<< 4); 	// force the output high
-		}
-		else if( 0 == duty )
-		{
-			TIM3->CCMR1 =  (TIM3->CCMR1 & ((uint32_t) 7 << 4)) | ((uint32_t) 4<< 4); 	// force the output low
-		}
-		else
-		{
-			TIM3->CCMR1 =  (TIM3->CCMR1 & ((uint32_t) 7 << 4)) | ((uint32_t) 6<< 4); 	// force the output PWM mode 1
-			TIM3->CCR1 = TIM3->ARR * duty; // set the duty ration
-		}*/
+	switch(pin) {
+		case MoterPwmPin:
+			/*if (1 == duty)
+			{
+				TIM3->CCMR1 =  (TIM3->CCMR1 & ((uint32_t) 7 << 4)) | ((uint32_t) 5<< 4); 	// force the output high
+			}
+			else if( 0 == duty )
+			{
+				TIM3->CCMR1 =  (TIM3->CCMR1 & ((uint32_t) 7 << 4)) | ((uint32_t) 4<< 4); 	// force the output low
+			}
+			else
+			{
+				TIM3->CCMR1 =  (TIM3->CCMR1 & ((uint32_t) 7 << 4)) | ((uint32_t) 6<< 4); 	// force the output PWM mode 1
+				TIM3->CCR1 = TIM3->ARR * duty; // set the duty ration
+			}*/
 
-		TIM3->CCR1 = TIM3->ARR * duty; // set the duty ration
-	}
-	else if ( PWMPin2 == pin )
-	{
-		/*if (1 == duty)
-		{
-			TIM3->CCMR1 =  (TIM3->CCMR1 & ((uint32_t) 7 << 12)) | ((uint32_t) 5<< 12); 	// force the output high
-		}
-		else if( 0 == duty )
-		{
-			TIM3->CCMR1 =  (TIM3->CCMR1 & ((uint32_t) 7 << 12)) | ((uint32_t) 4<< 12); 	// force the output low
-		}
-		else
-		{
-			TIM3->CCMR1 =  (TIM3->CCMR1 & ((uint32_t) 7 << 12)) | ((uint32_t) 6<< 12); 	// force the output PWM mode 1
+			TIM3->CCR1 = TIM3->ARR * duty; // set the duty ration
+			break;
+
+		case HeaterPwmPin:
+			/*if (1 == duty)
+			{
+				TIM3->CCMR1 =  (TIM3->CCMR1 & ((uint32_t) 7 << 12)) | ((uint32_t) 5<< 12); 	// force the output high
+			}
+			else if( 0 == duty )
+			{
+				TIM3->CCMR1 =  (TIM3->CCMR1 & ((uint32_t) 7 << 12)) | ((uint32_t) 4<< 12); 	// force the output low
+			}
+			else
+			{
+				TIM3->CCMR1 =  (TIM3->CCMR1 & ((uint32_t) 7 << 12)) | ((uint32_t) 6<< 12); 	// force the output PWM mode 1
+				TIM3->CCR2 = TIM3->ARR * duty; // set the duty ration
+			}*/
 			TIM3->CCR2 = TIM3->ARR * duty; // set the duty ration
-		}*/
-		TIM3->CCR2 = TIM3->ARR * duty; // set the duty ration
+			break;
 	}
 
 	//TIM3->EGR |= TIM_EGR_UG;

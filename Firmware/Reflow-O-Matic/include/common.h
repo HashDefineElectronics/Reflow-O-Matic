@@ -15,6 +15,7 @@
 	#include "MCU/pwm.h"
 	#include "MCU/temperature.h"
 	#include "pid.h"
+    #include "SolderProfile/Profile.h"
 	#include "OvenControl.h"
 
 	/////////////////////////////////////////////////////////////////////////

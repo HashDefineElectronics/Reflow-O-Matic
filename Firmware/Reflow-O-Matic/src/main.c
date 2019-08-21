@@ -50,7 +50,7 @@ int main(void) {
 	Tick_init();
 	Led_Init();
 	Terminal_Init(&SerialPort2);
-	OvenControl_Init();
+	OvenControl_Init(&Profile_CHIPQUIK_SMDLTLFP);
 
     for ( ;; ) {
     	Terminal_Monitor();

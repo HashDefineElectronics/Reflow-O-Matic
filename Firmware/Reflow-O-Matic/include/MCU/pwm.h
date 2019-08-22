@@ -13,7 +13,7 @@
 	////////////////////////////////////////////////////////////////////////////////
 	typedef enum{
 		HeaterPwmPin = 1,	///< PB4 - TIM3_ch1 - D5 - Heater
-		MoterPwmPin = 2		///< PB5 - TIM3_ch1 - D4 - Motor
+		MotorPwmPin = 2		///< PB5 - TIM3_ch1 - D4 - Motor
 	}PWMPinSelectType;
 
 	void PWM_Init(uint32_t frequencyHz, float initialtDuty);

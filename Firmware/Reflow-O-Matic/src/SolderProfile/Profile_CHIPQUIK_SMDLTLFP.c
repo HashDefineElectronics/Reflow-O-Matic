@@ -7,18 +7,23 @@
 
 #define ChipquikProfileNumberOfDataPoints 5
 
-static TemperaturePointType ProfileDataPoints[] = {
-    //{30, 60},  ///< The first 60 seconds allows the board to warm up
-    {90, 90},  ///< 90 seconds
-    {130, 90}, ///< 180 seconds
-    {138, 30}, ///< 210 Seconds
-    {165, 30}, ///< 240 Seconds
-    {138, 30}  ///< 270 Seconds
+static uint16_t ProfileDataPoints[][2] = {
+  //{30, 60},  ///< The first 60 seconds allows the board to warm up
+  //  {90, 90},  ///< 90 seconds
+  // {130, 90}, ///< 180 seconds
+  //  {138, 30}, ///< 210 Seconds
+  //  {165, 30}, ///< 240 Seconds
+  //  {138, 30}  ///< 270 Seconds
+  {10, 3},
+  {20, 4},
+  {30, 10},
+  {40, 10},
 };
 
 
 
 SolderProfileInterface Profile_CHIPQUIK_SMDLTLFP = {
-    .points = {ProfileDataPoints},
+    .name = (uint8_t *)"CHIPQUIK - SMDLTLFP",
+    .points = ProfileDataPoints,
     .NumberOfDataPoints = ChipquikProfileNumberOfDataPoints
 };

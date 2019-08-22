@@ -16,7 +16,8 @@
     typedef struct {
         uint32_t NumberOfDataPoints;            ///< this is the number of data points in the points array
         uint16_t MaxStartTemperature;           ///< this is the maximun temperature that this profile can start
-        TemperaturePointType * points[];
+        uint8_t *name;                          ///< this is the string name for this profile
+        uint16_t *points[];
     } SolderProfileInterface;
 
 

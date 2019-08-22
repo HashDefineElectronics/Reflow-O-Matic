@@ -52,7 +52,7 @@ void PWM_Init(uint32_t frequencyHz, float initialtDuty)
 	TIM3->EGR |= TIM_EGR_UG;
 
 	PWM_SetDuty(HeaterPwmPin, initialtDuty);
-	PWM_SetDuty(MoterPwmPin, initialtDuty);
+	PWM_SetDuty(MotorPwmPin, initialtDuty);
 
 
 
@@ -79,7 +79,7 @@ void PWM_SetDuty(PWMPinSelectType pin, float duty)
 	}
 
 	switch(pin) {
-		case MoterPwmPin:
+		case MotorPwmPin:
 			/*if (1 == duty)
 			{
 				TIM3->CCMR1 =  (TIM3->CCMR1 & ((uint32_t) 7 << 4)) | ((uint32_t) 5<< 4); 	// force the output high

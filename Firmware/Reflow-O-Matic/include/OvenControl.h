@@ -5,6 +5,7 @@
 
 #ifndef __OVEN_MONITOR_H__
 #define __OVEN_MONITOR_H__
+    #include "SolderProfile/Profile.h"
 	#include "common.h"
 
 
@@ -16,9 +17,11 @@
 	} OverControlStatusEnum;
 
 	void OvenControl_Init(SolderProfileInterface * profile);
-	void OvenControl_Process(float *currentTemp, float *currentTagetTemp, float *heaterPWM);
+	void OvenControl_Process(uint8_t *character);
 	OverControlStatusEnum OvenControl_SetTemperature(float temperature);
-	OverControlStatusEnum OverControl_Run(void);
+	OverControlStatusEnum OverControl_Start(void);
 	void OvenControl_Stop(void);
+	void OverControl_SetFanPower(float value);
+	void OvenControl_PrintStatus(void);
 
 #endif

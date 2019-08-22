@@ -14,10 +14,11 @@
      * defines the solder data profile
      */
     typedef struct {
-        uint32_t NumberOfDataPoints;            ///< this is the number of data points in the points array
-        uint16_t MaxStartTemperature;           ///< this is the maximun temperature that this profile can start
-        uint8_t *name;                          ///< this is the string name for this profile
-        TemperaturePointType * points[];
+        uint32_t    NumberOfDataPoints;            ///< this is the number of data points in the points array
+        uint16_t    MaxStartTemperature;           ///< this is the maximun temperature that this profile can start
+        uint8_t     *name;                          ///< this is the string name for this profile
+        uint32_t    *temperature;
+        uint32_t    *duration;
     } SolderProfileInterface;
 
 

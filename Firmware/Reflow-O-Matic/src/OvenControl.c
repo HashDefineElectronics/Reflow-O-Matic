@@ -39,7 +39,7 @@ typedef struct {
 } OvenParameterType;
 
 /**
- * holes the Over internal data
+ * holes the Oven internal data
  */
 static OvenParameterType OvenParameters = {
 	.state = OverControlState_Idel,
@@ -95,7 +95,7 @@ void OvenControl_Stop(void) {
  * This is the ain over control process
  */
 void OvenControl_Process(uint8_t *character) {
-uint8_t MessageBuffer[100];
+
 	// check if we need to update the screen
 	if (Tick_DelayMs_NonBlocking(FALSE, &OvenParameters.timer)) {
 			Tick_DelayMs_NonBlocking(TRUE, &OvenParameters.timer); // reset the tick counter
@@ -110,16 +110,11 @@ uint8_t MessageBuffer[100];
 						Terminal_WriteString((uint8_t *)"Reflow Complete\n\r");
 						return OvenControl_Stop();
 					}
-					Terminal_WriteString((uint8_t *)"temperatur set\n\r");
-					OvenParameters.profileDuration = 10;//OvenParameters.profile->points[OvenParameters.profileStep]->seconds;
-															Terminal_WriteString((uint8_t *)"temperatur set\n\r");
-					//OvenControl_SetTemperature((float)OvenParameters.profile->points[OvenParameters.profileStep]->temperature);
-					OvenControl_SetTemperature(OvenParameters.profile->points[OvenParameters.profileStep].temperature);
+					OvenParameters.profileDuration = OvenParameters.profile->duration[OvenParameters.profileStep];
+					OvenControl_SetTemperature(OvenParameters.profile->temperature[OvenParameters.profileStep]);
 					OvenParameters.profileStep++;
-				} else {
-					OvenParameters.profileDuration--;
-					Terminal_WriteString((uint8_t *)"Duration\n\r");
 				}
+				OvenParameters.profileDuration--;
 
 				if (OvenParameters.temperature > (OvenParameters.targetTemperature + MotorTemperatureTriggerThreshold)) {
 					OverControl_SetFanPower(100);
@@ -127,13 +122,15 @@ uint8_t MessageBuffer[100];
 					OverControl_SetFanPower(0);
 				}
 				OvenParameters.timeLapse ++;
-				Terminal_WriteString((uint8_t *)"lapse\n\r");
 			}
 			
 
 			OvenParameters.heaterPwm =  PID_Process(&OvenParameters.heaterPID, OvenParameters.targetTemperature, OvenParameters.temperature);
 			PWM_SetDuty(HeaterPwmPin, OvenParameters.heaterPwm);
-			
+
+			if (OvenParameters.state == OverControlState_Running) {
+				OvenControl_PrintStatus();
+			}
 	}
 }
 
@@ -150,7 +147,7 @@ OverControlStatusEnum OverControl_Start(void) {
 	// Check if we are ideling and have a valid profile pointer
 	if(OverControlState_Idel == OvenParameters.state) {
 
-		if(OvenParameters.profile->MaxStartTemperature <= OvenParameters.temperature) {
+		if(OvenParameters.temperature <= OvenParameters.profile->MaxStartTemperature ) {
 			
 			OvenParameters.profileStep = 0;
 			OvenParameters.profileDuration = 0;
@@ -215,7 +212,7 @@ void OvenControl_Init(SolderProfileInterface * profile){
 void OvenControl_PrintStatus(void) {
 	uint8_t MessageBuffer[100];
 	snprintf((char *)&MessageBuffer[0], 100, 
-			"T%4.2f,A%4.2f,H%4.2f,M%4.2f,C%d,L%d,D%d\n\r", 
+			"T%4.2f,A%4.2f,H%4.2f,M%4.2f,C%lu,L%lu,D%lu\n\r", 
 			OvenParameters.temperature, 
 			OvenParameters.targetTemperature,
 			OvenParameters.heaterPwm,

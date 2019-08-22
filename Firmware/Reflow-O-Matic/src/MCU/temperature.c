@@ -9,7 +9,7 @@
 
 static volatile float ConvertionConstant = 330.0;
 static const uint32_t AdcResoluton = 4096;
-static float TemperatureFilterConstant = 0.2;
+static float TemperatureFilterConstant = 0.4;
 static float FilterTemperatureRaw = 0.0;
 
 #ifdef EN_ADC_SELF_CALIBRATION
@@ -84,7 +84,7 @@ uint_fast8_t  Temperature_Read(float *temperature, float *voltage, float *normal
 
 	TempReading = ADC1->DR;
 
-	FilterTemperatureRaw += (TemperatureFilterConstant * (((float)TempReading/AdcResoluton) - FilterTemperatureRaw));
+	FilterTemperatureRaw += (TemperatureFilterConstant * (((float)TempReading / AdcResoluton) - FilterTemperatureRaw));
 
 	if ( temperature )
 	{

@@ -110,13 +110,11 @@ uint8_t MessageBuffer[100];
 						Terminal_WriteString((uint8_t *)"Reflow Complete\n\r");
 						return OvenControl_Stop();
 					}
-						snprintf((char *)&MessageBuffer[0], 100,  "Step: %ld %d\n\r", OvenParameters.profileStep, 
-						OvenParameters.profile->points[OvenParameters.profileStep][0]);
-						Terminal_WriteString(&MessageBuffer[0]);
-
-					OvenParameters.profileDuration = OvenParameters.profile->points[OvenParameters.profileStep][0];
+					Terminal_WriteString((uint8_t *)"temperatur set\n\r");
+					OvenParameters.profileDuration = 10;//OvenParameters.profile->points[OvenParameters.profileStep]->seconds;
 															Terminal_WriteString((uint8_t *)"temperatur set\n\r");
-					OvenControl_SetTemperature((float)OvenParameters.profile->points[OvenParameters.profileStep][1]);
+					//OvenControl_SetTemperature((float)OvenParameters.profile->points[OvenParameters.profileStep]->temperature);
+					OvenControl_SetTemperature(OvenParameters.profile->points[OvenParameters.profileStep].temperature);
 					OvenParameters.profileStep++;
 				} else {
 					OvenParameters.profileDuration--;
@@ -217,7 +215,7 @@ void OvenControl_Init(SolderProfileInterface * profile){
 void OvenControl_PrintStatus(void) {
 	uint8_t MessageBuffer[100];
 	snprintf((char *)&MessageBuffer[0], 100, 
-			"T%4.2f,A%4.2f,H%4.2f,M%4.2f,C%ld,L%ld,D%ld\n\r", 
+			"T%4.2f,A%4.2f,H%4.2f,M%4.2f,C%d,L%d,D%d\n\r", 
 			OvenParameters.temperature, 
 			OvenParameters.targetTemperature,
 			OvenParameters.heaterPwm,

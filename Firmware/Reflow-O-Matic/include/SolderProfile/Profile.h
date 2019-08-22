@@ -6,8 +6,8 @@
      * This is the temperature data points
      */
     typedef struct {
-        uint16_t temperature; ///< this the the desire temperature
-        uint16_t seconds;     ///< this is how many seconds this temperature is going to be held for
+        uint32_t temperature; ///< this the the desire temperature
+        uint32_t seconds;     ///< this is how many seconds this temperature is going to be held for
     } TemperaturePointType;
 
     /**
@@ -17,8 +17,9 @@
         uint32_t NumberOfDataPoints;            ///< this is the number of data points in the points array
         uint16_t MaxStartTemperature;           ///< this is the maximun temperature that this profile can start
         uint8_t *name;                          ///< this is the string name for this profile
-        uint16_t *points[];
+        TemperaturePointType * points[];
     } SolderProfileInterface;
+
 
 
     extern SolderProfileInterface Profile_CHIPQUIK_SMDLTLFP;

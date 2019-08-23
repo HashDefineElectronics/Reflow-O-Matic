@@ -19,7 +19,7 @@ static uint32_t ProfileDuration[] = {
   45,   ///< 180 seconds
   45,   ///< 180 seconds
   30,   ///< 210 Seconds
-  30,   ///< 240 Seconds
+  45,   ///< 240 Seconds
   30,   ///< 270 Seconds
 };
 
